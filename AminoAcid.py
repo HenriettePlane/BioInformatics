@@ -35,10 +35,12 @@ hscale={"R":-4.5,"K":-3.9,"N":-3.5,"D":-3.5,"Q":-3.5,"E":-3.5,"H":-3.2,
 # Then the dictionary will be: {'seq1':'ME','seq2':'MR'}
 #
 ## TEST THIS FUNCTION WITH: fasta_aa_version.txt
-# def dna2prot(f1, f2="translated_fasta.txt"):
-# """f1 is the name of the input fasta text file; f2 is the default name
+ def dna2prot(f1, f2="translated_fasta.txt"):
+     fasta = open(f1,'r')
+     
+ """f1 is the name of the input fasta text file; f2 is the default name
 # of the translated protein fasta file"""
-#     return
+     return
 
 
 #Function 2: Reads in a dictionary of protein sequences (see dna2prot) and
