@@ -21,7 +21,8 @@ hscale={"R":-4.5,"K":-3.9,"N":-3.5,"D":-3.5,"Q":-3.5,"E":-3.5,"H":-3.2,
     "P":-1.6,"Y":-1.3,"W":-0.9,"S":-0.8,"T":-0.7,"G":-0.4,"A":1.8,"M":1.9,
     "C":2.5,"F":2.8,"L":3.8,"V":4.2,"I":4.5}
 
-# FUNCTION 1: TRANSLATE Reads in a DNA sequence fasta file,
+#### FUNCTION 1: ##############################################################
+# TRANSLATE Reads in a DNA sequence fasta file, 
 # and outputs a Fasta file of protein translations and it
 # should be able to do standard (eukaryotic) translation only.
 # The first function reads in a fasta file of DNA sequences and:
@@ -38,28 +39,27 @@ hscale={"R":-4.5,"K":-3.9,"N":-3.5,"D":-3.5,"Q":-3.5,"E":-3.5,"H":-3.2,
 #
 ## TEST THIS FUNCTION WITH: fasta_aa_version.txt
 
-## Solution ##
+### Solution for function 1 ###
+# Step 1: Write a simple helper function so that the individual functionality is easier to test
 # findprots is a simple function that takes in a DNA anti sense string, cleans it, breaks it into codons,
 # translates it into RNA by changing T's into U's and then uses the standard_code dictionairy to find
 # the amino acid that matches the codon. It returns a string of amino acids.
 def find_aa(dna,aa_dict=standard_code):
     dna = dna.upper().strip() # clean the DNA
     dna = re.sub('T','U',dna) # change T's into U's
-    # create a list of codons
-    codons = [] 
-    for i in range(0,len(dna),3):
-        codons.append(dna[i:i+3])
     # create a string of amino acids
-    aa_string = ''    
-    for codon in codons: 
-        if len(codon) == 3:
-            aa_string += standard_code[codon]
-        else:
-            pass
-    return(aa_string)
+    aa_string = ''
+    for i in range(0,len(dna),3):
+        if i+3 <= len(dna):
+            aa_string += aa_dict[dna[i:i+3]]
+        else: pass
+    return aa_string
 
-print(find_aa('GUAUGA'))
+# testing the function
+print('-------- FUNCTION 1 TESTS ------------------')
+print(find_aa('ATGTCAAAGT'))
 
+# Step 2: write the main function that calls the helper function.
 # function dna2prot has two arguments: f1 is the name of the input fasta text file; f2 is the default name
 # of the translated protein fasta file
 def dna2prot(f1, f2="translated_fasta.txt"):
@@ -76,17 +76,14 @@ def dna2prot(f1, f2="translated_fasta.txt"):
         value = find_aa(dna_list[i+1])
         prot_dict[key] = value
         fout.write(key + '\n' + value + '\n')
-    print(prot_dict)
     return(prot_dict)
 
-result = dna2prot('fasta_aa_version.txt')
-print(result.items())
-# fout = open('test.txt','w')
+# testing the complete function
+test = dna2prot('fasta_aa_version.txt')
+print(test.items())
 
-
-
-
-#Function 2: Reads in a dictionary of protein sequences (see dna2prot) and
+######## FUNCTION 2:#######################################################################
+# Reads in a dictionary of protein sequences (see dna2prot) and
 # (1) Writes a table of amino acids counts for each protein
 # to a tab-separated text file.
 # (2) Returns a dictionary of the data that looks like this:
@@ -103,7 +100,8 @@ print(result.items())
 # def aa_counts(prot_dict,f2="aatable.txt"):
 #     return
 
-#Function 3: Reads in a dictionary protein sequences, and finds
+######### FUNCTION 3: ####################################################################
+# Reads in a dictionary protein sequences, and finds
 # all instances of the motif.
 # (1) Writes a table of motifs and hits for each sequence (see below)
 # to a tab-separated text file.
@@ -118,10 +116,28 @@ print(result.items())
 # Seq3 MN[A-Z] 1
 # """
 
-# def motif_finder(prot_dict, motif, f2="motifs.txt"):
-#     return
 
-#Function 4: Reads in a dictionary protein sequences, scans all overlapping
+### Solution for Function 3 ####
+def motif_finder(prot_dict, motif, f2="motifs.txt"):
+    motif_dict = {}
+    file = open(f2,'w')
+    file.write('SeqName' + '\t' + 'Motif' + '\t' +  'Hits\n')
+    for key,value in prot_dict.items():
+       m = re.findall(motif,value)
+       hits = len(m)
+       line = (key + '\t' + motif + '\t' + str(hits) + '\n')
+       print(line)
+       file.write(line)
+       motif_dict[key] = m
+    return motif_dict
+
+test3 = motif_finder(test,'A.')
+print('-------- FUNCTION 3 TESTS ----------------------')
+print(test3.items())
+
+
+############ FUNCTION 4: ##########################################################################
+# Reads in a dictionary protein sequences, scans all overlapping
 # windows and calculates averge hydrophobicity
 # (1) Writes a table of the avg scores (see below)
 # (2) Returns a dictionary with a list hydrophobicity scores
