@@ -100,6 +100,54 @@ print(test.items())
 # def aa_counts(prot_dict,f2="aatable.txt"):
 #     return
 
+#Function 2 Solution#
+
+def aa_counts(prot_dict, f2="aatable.txt"):
+    
+    f2=open("aatable.txt", "w")
+    
+    results=prot_dict
+    amino_acids=hscale.keys()
+    amino_acids=sorted(amino_acids)
+    header=f"AminoAcid {' '.join(amino_acids)} TOTAL \n"
+    f2.write(header)
+    
+    j=0
+    
+
+    keys_list=list(prot_dict.keys())
+    values_list=list(prot_dict.values())
+    for prot_seq in values_list:
+        counts_dict = {key: 0 for key in amino_acids}
+        for aa in prot_seq:
+            if aa in counts_dict:
+                counts_dict[aa] +=1
+                 
+        #print(counts_dict)
+        counts_tuple=list(counts_dict.items())
+        #print(counts_tuple)
+        results[keys_list[j]] = counts_tuple
+        
+        j=j+1
+            
+    for key, value in results.items():    
+        TOTAL=0
+        second_values=[]
+        for items in value:
+            TOTAL=TOTAL+int(items[1])
+            second_values.append(str(items[1]))
+          
+        line = f"{key}      {' '.join(second_values)}  {TOTAL}\n"
+        f2.write(line)
+        
+            
+    f2.close()
+    return results
+ 
+   
+#result=aa_counts(protein_dict)
+#print(result)
+
 ######### FUNCTION 3: ####################################################################
 # Reads in a dictionary protein sequences, and finds
 # all instances of the motif.
