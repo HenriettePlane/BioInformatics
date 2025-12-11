@@ -50,7 +50,7 @@ def find_aa(dna,aa_dict=standard_code):
     # create a string of amino acids
     aa_string = ''
     for i in range(0,len(dna),3):
-        if aa_dict[dna[i:i+3]] = '*':
+        if aa_dict[dna[i:i+3]] == '*':
             break
         elif i+3 <= len(dna):
             aa_string += aa_dict[dna[i:i+3]]
