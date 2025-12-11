@@ -118,6 +118,7 @@ print(test.items())
 
 
 ### Solution for Function 3 ####
+
 def motif_finder(prot_dict, motif, f2="motifs.txt"):
     motif_dict = {}
     file = open(f2,'w')
