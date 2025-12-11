@@ -106,7 +106,7 @@ def aa_counts(prot_dict, f2="aatable.txt"):
     
     f2=open("aatable.txt", "w")
     
-    results=prot_dict
+    results={}
     amino_acids=hscale.keys()
     amino_acids=sorted(amino_acids)
     header=f"AminoAcid {' '.join(amino_acids)} TOTAL \n"
@@ -114,26 +114,35 @@ def aa_counts(prot_dict, f2="aatable.txt"):
     
     j=0
     
+
     keys_list=list(prot_dict.keys())
     values_list=list(prot_dict.values())
+        
     for prot_seq in values_list:
         counts_dict = {key: 0 for key in amino_acids}
         for aa in prot_seq:
             if aa in counts_dict:
                 counts_dict[aa] +=1
                  
+        #print(counts_dict)
         counts_tuple=list(counts_dict.items())
-        results[keys_list[j]] = counts_tuple        
+        #print(counts_tuple)
+        results[keys_list[j]] = counts_tuple
+        
         j=j+1
             
     for key, value in results.items():    
         TOTAL=0
         second_values=[]
+        results[key]= counts_tuple
         for items in value:
             TOTAL=TOTAL+int(items[1])
-            second_values.append(str(items[1]))          
+            second_values.append(str(items[1]))
+          
         line = f"{key}      {' '.join(second_values)}  {TOTAL}\n"
-        f2.write(line)                    
+        f2.write(line)
+        
+            
     f2.close()
     return results
  
