@@ -100,6 +100,47 @@ print(test.items())
 # def aa_counts(prot_dict,f2="aatable.txt"):
 #     return
 
+#Function 2 Solution#
+
+def aa_counts(prot_dict, f2="aatable.txt"):
+    
+    f2=open("aatable.txt", "w")
+    
+    results=prot_dict
+    amino_acids=hscale.keys()
+    amino_acids=sorted(amino_acids)
+    header=f"AminoAcid {' '.join(amino_acids)} TOTAL \n"
+    f2.write(header)
+    
+    j=0
+    
+    keys_list=list(prot_dict.keys())
+    values_list=list(prot_dict.values())
+    for prot_seq in values_list:
+        counts_dict = {key: 0 for key in amino_acids}
+        for aa in prot_seq:
+            if aa in counts_dict:
+                counts_dict[aa] +=1
+                 
+        counts_tuple=list(counts_dict.items())
+        results[keys_list[j]] = counts_tuple        
+        j=j+1
+            
+    for key, value in results.items():    
+        TOTAL=0
+        second_values=[]
+        for items in value:
+            TOTAL=TOTAL+int(items[1])
+            second_values.append(str(items[1]))          
+        line = f"{key}      {' '.join(second_values)}  {TOTAL}\n"
+        f2.write(line)                    
+    f2.close()
+    return results
+ 
+   
+#result=aa_counts(protein_dict)
+#print(result)
+
 ######### FUNCTION 3: ####################################################################
 # Reads in a dictionary protein sequences, and finds
 # all instances of the motif.
@@ -152,3 +193,42 @@ print(test3.items())
 # """
 # def hydrophobicity_analysis(prot_dict, window=5, f2="hydro.txt"):
 #     return
+
+#Function 4 Solution#
+
+def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):        
+    f2=open("hydro.txt", "w")
+    f2.write(f'\t Window \nSeqName 1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t \n')
+    results=prot_dict
+    j=0
+    
+    keys_list=list(prot_dict.keys())
+    values_list = list(prot_dict.values())
+    #print(values_list)
+    for prot_seq in values_list:
+        #print(prot_seq)
+        windows=[]
+
+        for i in range(0,len(prot_seq),1):
+            window=prot_seq[i:i+window_size]
+            if len(window)==window_size:
+                windows.append(window)
+            
+        avg_values=[]
+        for win in windows:
+            hydro_counter=0
+            for aa in win: 
+                hydro_counter += hscale.get(aa)
+            average=hydro_counter/window_size
+            avg_values.append(f'{average:.2f}')
+            results[keys_list[j]] = avg_values
+            
+        j=j+1
+
+    for key, value in results.items():    
+        line= key + "\t"+"\t".join(value) + "\n"
+        f2.write(line)
+        
+    f2.close()
+     
+    return results
