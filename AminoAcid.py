@@ -186,9 +186,7 @@ def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):
     for key, value in results.items():    
         line= key + "\t"+"\t".join(value) + "\n"
         f2.write(line)
-    
         
     f2.close()
      
-    
     return results
