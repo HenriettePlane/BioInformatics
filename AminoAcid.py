@@ -151,3 +151,44 @@ print(test3.items())
 # """
 # def hydrophobicity_analysis(prot_dict, window=5, f2="hydro.txt"):
 #     return
+
+#Function 4 Solution#
+
+def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):        
+    f2=open("hydro.txt", "w")
+    f2.write(f'\t Window \nSeqName 1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t \n')
+    results=prot_dict
+    j=0
+    
+    keys_list=list(prot_dict.keys())
+    values_list = list(prot_dict.values())
+    #print(values_list)
+    for prot_seq in values_list:
+        #print(prot_seq)
+        windows=[]
+
+        for i in range(0,len(prot_seq),1):
+            window=prot_seq[i:i+window_size]
+            if len(window)==window_size:
+                windows.append(window)
+            
+        avg_values=[]
+        for win in windows:
+            hydro_counter=0
+            for aa in win: 
+                hydro_counter += hscale.get(aa)
+            average=hydro_counter/window_size
+            avg_values.append(f'{average:.2f}')
+            results[keys_list[j]] = avg_values
+            
+        j=j+1
+
+    for key, value in results.items():    
+        line= key + "\t"+"\t".join(value) + "\n"
+        f2.write(line)
+    
+        
+    f2.close()
+     
+    
+    return results
