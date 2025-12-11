@@ -122,9 +122,7 @@ def aa_counts(prot_dict, f2="aatable.txt"):
             if aa in counts_dict:
                 counts_dict[aa] +=1
                  
-        #print(counts_dict)
         counts_tuple=list(counts_dict.items())
-        #print(counts_tuple)
         results[keys_list[j]] = counts_tuple        
         j=j+1
             
