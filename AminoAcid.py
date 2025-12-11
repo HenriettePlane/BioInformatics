@@ -114,7 +114,6 @@ def aa_counts(prot_dict, f2="aatable.txt"):
     
     j=0
     
-
     keys_list=list(prot_dict.keys())
     values_list=list(prot_dict.values())
     for prot_seq in values_list:
@@ -126,8 +125,7 @@ def aa_counts(prot_dict, f2="aatable.txt"):
         #print(counts_dict)
         counts_tuple=list(counts_dict.items())
         #print(counts_tuple)
-        results[keys_list[j]] = counts_tuple
-        
+        results[keys_list[j]] = counts_tuple        
         j=j+1
             
     for key, value in results.items():    
@@ -135,12 +133,9 @@ def aa_counts(prot_dict, f2="aatable.txt"):
         second_values=[]
         for items in value:
             TOTAL=TOTAL+int(items[1])
-            second_values.append(str(items[1]))
-          
+            second_values.append(str(items[1]))          
         line = f"{key}      {' '.join(second_values)}  {TOTAL}\n"
-        f2.write(line)
-        
-            
+        f2.write(line)                    
     f2.close()
     return results
  
