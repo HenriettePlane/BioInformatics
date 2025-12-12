@@ -149,9 +149,9 @@ def aa_counts(prot_dict, f2="aatable.txt"):
     f2.close()
     return results
  
-   
-#result=aa_counts(protein_dict)
-#print(result)
+print('-------------------FUNCTION 2 TESTS -------\n')   
+result=aa_counts(test)
+print(result)
 
 ######### FUNCTION 3: ####################################################################
 # Reads in a dictionary protein sequences, and finds
@@ -244,3 +244,7 @@ def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):
     f2.close()
      
     return results
+
+print('------------FUNCTION 4 TESTS --------------\n')
+test4 = hydrophobicity_analysis(test,5)
+print(test4.items())
