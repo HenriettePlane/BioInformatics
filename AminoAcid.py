@@ -230,7 +230,7 @@ def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):
         for win in windows:
             hydro_counter=0
             for aa in win: 
-                hydro_counter += hscale.get(aa)
+                hydro_counter += hscale[aa]
             average=hydro_counter/window_size
             avg_values.append(f'{average:.2f}')
             results[keys_list[j]] = avg_values
