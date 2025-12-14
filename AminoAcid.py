@@ -210,7 +210,6 @@ print(test3.items())
 
 def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):        
     f2=open("hydro.txt", "w")
-    #f2.write(f'\t Window \nSeqName        1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t 8 \t 9 \t 10 \t \n')
     results=prot_dict
     j=0
     
