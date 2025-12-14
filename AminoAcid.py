@@ -210,7 +210,7 @@ print(test3.items())
 
 def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):        
     f2=open("hydro.txt", "w")
-    f2.write(f'\t Window \nSeqName 1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t \n')
+    #f2.write(f'\t Window \nSeqName        1 \t 2 \t 3 \t 4 \t 5 \t 6 \t 7 \t 8 \t 9 \t 10 \t \n')
     results=prot_dict
     j=0
     
@@ -222,9 +222,13 @@ def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):
         windows=[]
 
         for i in range(0,len(prot_seq),1):
-            window=prot_seq[i:i+window_size]
-            if len(window)==window_size:
-                windows.append(window)
+            if len(prot_seq) < window_size:
+                windows.append(prot_seq)
+                break 
+            else:
+                window=prot_seq[i:i+window_size]
+                if len(window)==window_size:
+                    windows.append(window)
             
         avg_values=[]
         for win in windows:
@@ -236,7 +240,10 @@ def hydrophobicity_analysis(prot_dict, window_size, f2="hydro.txt"):
             results[keys_list[j]] = avg_values
             
         j=j+1
-
+    max_length=max(len(avg) for avg in results.values())
+    header_list=[str(i) for i in range(1, max_length+1)]
+    #print(max_length)
+    f2.write(f"\t Window \nSeqName \t {'      '.join(header_list)} \n")
     for key, value in results.items():    
         line= key + "\t"+"\t".join(value) + "\n"
         f2.write(line)
