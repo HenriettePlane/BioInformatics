@@ -64,15 +64,42 @@ return
 # """
 # The dictionary entry should be:
 # {'NC_005816.1': [''Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1,
-complete sequence.',
-''TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG']
+#complete sequence.',
+#''TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG']
 #
 #
 #RETURN VALUES: The dictionary with ALL the entries.
 #
 #== FUNCTION 2 ==
-def ParseGenbankFile():
-return
+from Bio.Seq import Seq
+from Bio import SeqIO
+
+def ParseGenbankFile(file_name):
+    genbank_dict={}
+    for seq_record in SeqIO.parse(file_name, "genbank"):
+        record_ids=[]
+        descr=[]
+        seqs=[]
+        descr_and_seq=[]
+        record_ids.append(seq_record.id)
+        #print(record_ids)
+        descr.append(seq_record.description)
+        #print(descr)
+        seqs.append(seq_record.seq)
+        #print(seqs)
+        for i in range(len(record_ids)):
+            descr_and_seq.append((descr[i], seqs[i]))
+            #print(descr_and_seq)
+       
+        for i in range(len(record_ids)):
+            genbank_dict[record_ids[i]] = descr_and_seq[i]
+    
+    return genbank_dict
+        
+print("-----Test Function 2-----")   
+output=ParseGenbankFile("estrogen_sequence.gb")
+print(output)
+    
 #---------------------------------------------------------------------------------
 #PART 3 - See sectons 3.8 Transcription AND 3.9 Translation
 # Note: Assume the sequence is a CODING STRAND (don't reverse complement).
