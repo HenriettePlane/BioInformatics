@@ -124,8 +124,26 @@ return
 # (2) Write it to a file. (See below)
 #RETURN VALUES: 1 (True)
 #== FUNCTION 4 ==
-def FetchGenbankFile():
-return
+from Bio import Entrez
+from Bio import SeqIO
+
+def FetchGenbankFile(record_id):
+        
+    handle=Entrez.efetch(db='nucleotide', id=str(record_id), rettype='gb', retmode='text')
+    record=SeqIO.read(handle, 'gb')
+    output=f"{record_id}.gb.txt"
+    SeqIO.write(record, output, 'gb')
+        
+    return 
+
+print("--------Test Function 4--------")
+try:
+    file=FetchGenbankFile(186972394)
+    print("File downloaded successfully")
+except:
+    print("Failed, try again")
+
+
 # """
 # If you were to call the FetchGenbankFile with the following id:
 # x=FetchGenbankFile('186972394')
