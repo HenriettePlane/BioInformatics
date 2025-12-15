@@ -62,15 +62,37 @@ def find_aa(dna,aa_dict=standard_code):
 print('-------- FUNCTION 1 TESTS ------------------')
 print(find_aa('ATGTCAAAGT'))
 
-# Step 2: write the main function that calls the helper function.
+# Step 2: write a second helper function that takes fragments of a sequence that are created from reading
+# a file into a list concatenates them into one clean sequence
+def concat_dna(fasta_lines):
+    dna = ''
+    for string in fasta_lines:
+        if string[0] == '>':
+            break
+        else:
+            dna += string.upper().strip()
+    return dna
+
+
+
+# Step 3: write the main function that calls the helper function.
 # function dna2prot has two arguments: f1 is the name of the input fasta text file; f2 is the default name
 # of the translated protein fasta file
 def dna2prot(f1, f2="translated_fasta.txt"):
     # read lines of dna fasta file into a list
     fasta = open(f1,'r')
-    dna_list = []
+    flines = []
     for line in fasta:
-        dna_list.append(line.strip())
+        flines.append(line)
+    i = 0
+    dna_list = []
+    while i < len(flines):
+        if flines[i][0] == '>':
+            dna_list.append(flines[i].strip())
+            dna_list.append(concat_dna(flines[i+1:]))
+            i+=1
+        else:
+            i+=1
     # create a dictionary of proteins and write the titles and protein strings to a fasta file
     prot_dict = {}
     fout = open(f2,'w')
@@ -82,7 +104,7 @@ def dna2prot(f1, f2="translated_fasta.txt"):
     return(prot_dict)
 
 # testing the complete function
-test = dna2prot('fasta_aa_version.txt')
+test = dna2prot('ls_orchid.fasta')
 print(test.items())
 
 ######## FUNCTION 2:#######################################################################
