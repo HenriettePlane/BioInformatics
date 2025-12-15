@@ -1,3 +1,7 @@
+from Bio.Seq import Seq
+from Bio import SeqIO
+import re
+
 #---------------------------------------------------------------------------------
 #BIOPYTHON EXERCISE - MASTERS STUDENTS
 #---------------------------------------------------------------------------------
@@ -37,8 +41,17 @@
 #
 #RETURN VALUES: The dictionary with ALL the entries.
 #== FUNCTION 1 ==
-def ParseFastaFile():
-return
+def ParseFastaFile(fasta):
+    gi_dict = {}
+    for record in SeqIO.parse(fasta,'fasta'):
+        key = re.search(r"\d+",record.id).group()   # use a regular expression to find the first number
+        value = str(record.seq)                     # turn the seq object into a string before adding it
+        gi_dict[key] = value
+    return gi_dict
+
+print('------------------Test Function 1 -------------------------\n')
+orchid_gi_dict = ParseFastaFile('ls_orchid.fasta')
+print(orchid_gi_dict['2765658'] + '\n')
 #---------------------------------------------------------------------------------
 #PART 2 - You will need a Genbank file. One with MULTIPLE SEQUENCE RECORDS.
 # You can use the one in the tutorial (ls_orchid.gbk).
@@ -71,8 +84,7 @@ return
 #RETURN VALUES: The dictionary with ALL the entries.
 #
 #== FUNCTION 2 ==
-from Bio.Seq import Seq
-from Bio import SeqIO
+
 
 def ParseGenbankFile(file_name):
     genbank_dict={}
@@ -96,7 +108,7 @@ def ParseGenbankFile(file_name):
     
     return genbank_dict
         
-print("-----Test Function 2-----")   
+print("-----Test Function 2-----\n")   
 output=ParseGenbankFile("estrogen_sequence.gb")
 print(output)
     
@@ -111,8 +123,29 @@ print(output)
 # (3) These amino acid sequences should be stored in a list.
 #RETURN VALUES: A LIST of all the amino acid sequences (strings)
 #== FUNCTION 3 ==
-def TranscribeTranslate():
-return
+def TranscribeTranslate(nmers):
+    aa_list = []                # initialise an empty list to store results
+    for nmer in nmers:
+        if len(nmer)%3 != 0:    # adding a trailing N allows for the translation of mers 
+            nmer = nmer + 'N'   # that are not a multiple of 3, even though it does produce a warning
+        nmer = Seq(nmer)        # creating a Seq object out of the nmer so we can use the Biopython methods
+        aa_list.append(str(nmer.transcribe().translate())) # adding the transcribed and translated string to the list
+    return aa_list
+
+print('---------Test Function 3 ------------\n')
+four_mer_list = ['ACTG','GGGT','TCAG','TTAA','AAGG','CCAA','ACGT','GATT','GCCT','GACT']
+five_mer_list = [mer + 'G' for mer in four_mer_list]
+six_mer_list = [mer + 'AC' for mer in four_mer_list]
+sixty_mer_list = [mer *10 for mer in six_mer_list]
+print(TranscribeTranslate(four_mer_list))
+print(TranscribeTranslate(five_mer_list))
+print(TranscribeTranslate(six_mer_list))
+print(TranscribeTranslate(sixty_mer_list))
+
+
+
+
+
 #---------------------------------------------------------------------------------
 #PART 4 - See section 9.6 EFetch: Downloading full records from Entrez
 # This function will use a pubmed ID number to fetch a file from the internet
@@ -136,7 +169,7 @@ def FetchGenbankFile(record_id):
         
     return 
 
-print("--------Test Function 4--------")
+print("--------Test Function 4--------\n")
 try:
     file=FetchGenbankFile(186972394)
     print("File downloaded successfully")
