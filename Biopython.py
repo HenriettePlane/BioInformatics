@@ -159,7 +159,7 @@ print(TranscribeTranslate(sixty_mer_list))
 #== FUNCTION 4 ==
 from Bio import Entrez
 from Bio import SeqIO
-
+email_address='mnatu0922@sdsu.edu'
 def FetchGenbankFile(record_id):
         
     handle=Entrez.efetch(db='nucleotide', id=str(record_id), rettype='gb', retmode='text')
